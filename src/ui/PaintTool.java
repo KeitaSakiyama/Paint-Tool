@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class PaintTool extends JFrame {
@@ -34,6 +36,34 @@ public class PaintTool extends JFrame {
      * Create the frame.
      */
     public PaintTool() {
+        // 起動時にファイルを初期化
+        try {
+            Files.write(Paths.get("draw_data.txt"), "SHAPES\nTEXTS\nGIFS\n".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // シャットダウンした際にファイルを初期化
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                Files.write(Paths.get("draw_data.txt"), "SHAPES\nTEXTS\nGIFS\n".getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        // ウィンドウが閉じられる際にファイルを初期化
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    Files.write(Paths.get("draw_data.txt"), "SHAPES\nTEXTS\nGIFS\n".getBytes());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
         setPreferredSize(new Dimension(1000, 600));
         setTitle("SoftDev Paint Tool");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

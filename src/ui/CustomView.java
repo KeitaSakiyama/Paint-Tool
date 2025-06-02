@@ -25,7 +25,6 @@ public class CustomView extends JPanel {
     private ColoredRectangle selectedShape = null;
     private TextShape selectedText = null;
     private GIFShape selectedGIF = null;
-    private Timer animationTimer;
     private boolean isAnimating = false;
     private final List<Thread> animationThreads = new CopyOnWriteArrayList<>();
     private int dx = 1, dy = 1;
